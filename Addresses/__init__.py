@@ -1,11 +1,9 @@
 
 
-#!/usr/bin/env python
-import sys
-import json
-
-for arg in sys.argv:
-  print(arg)
+####!/usr/bin/env python3
+####!/usr/bin/python3
+#!c:/Python39/python.exe
+import getopt, sys, json
 
 #with open('databasenew.json') as f:
   #data = json.load(f)
@@ -55,6 +53,7 @@ class addressbook(object):
     for a in self.Addressbook:
       if a['name'] == name:
         return (a['postcode'])
+
   
   def add(self, name,address,postcode):
     x1 = postaladdress(name,address,postcode)
@@ -75,14 +74,51 @@ class addressbook(object):
           a['address'] = address
           a['postcode'] = postcode
     return self
+
+
+full_cmd_arguments = sys.argv
+
+argument_list = full_cmd_arguments[1:]
+print (argument_list)
+
+short_options = "hf:d:a:"
+long_options = ["help", "input=", "delete=", "add="]
+
+try:
+    arguments, values = getopt.getopt(argument_list, short_options, long_options)
+except getopt.error as err:
+    # Output error, and return with an error code
+    print (str(err))
+    sys.exit(2)
+
+# Evaluate given options
+p_object = addressbook(JSONData)
+print(arguments)
+for current_argument, current_value in arguments:
+    if current_argument in ("-f", "--input"):
+        #p_object.find(f'{current_value}')
+        p_object.find(current_value)
+        #print (current_value)
+        #print (("Enabling special input mode (%s)") % (current_value))
+    if current_argument in ("-d", "--delete"):
+        p_object.remove(current_value)
+    if current_argument in ("-a", "--add"):  
+        x = current_value.split(", ")
+        p_object.add(x[0],x[1],x[2])
+        #print (current_value)
+    elif current_argument in ("-h", "--help"):
+        print ("Displaying help")
+    #elif current_argument in ("-o", "--output"):
+    # 
+    #    print (("Enabling special output mode (%s)") % (current_value))
     
 
 # Assign object of the class
-p_object = addressbook(JSONData)
-p_object.find('Matthew Hurrell')
-p_object.add('Prince','Highgrove','GL7')
-p_object.remove('Prince')
-p_object.amend('Queen','Hotel','NW10')
+
+
+#p_object.add('Prince','Highgrove','GL7')
+#p_object.remove('Prince')
+#p_object.amend('Queen','Hotel','NW10')
 
 print (p_object.Addressbook)
 
