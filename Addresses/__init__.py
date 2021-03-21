@@ -8,9 +8,6 @@ import getopt, sys, json
 #with open('databasenew.json') as f:
   #data = json.load(f)
 
-#for address in data['Addressbook']:
-#  print (address)
-
 
 #with open('databasenew.json', 'w') as f:
 #  json.dump = (data,f)
@@ -19,17 +16,8 @@ import getopt, sys, json
   #json.dump(data, f, ensure_ascii=False, indent=4)
 
 
-##print (data['Addressbook'])
-#print (type(data))
-
-#list1 = [1,2,3]
-#print (type(list1))
-
-#json.dump(data,indent = 4)
-
-
 # Define JSON data
-#JSONData = '{"Java": "3 Credits", "PHP": "2 Credits", "C++": "3 Credits"}'
+
 JSONData = '{"Addressbook": [{"name": "Matthew Hurrell", "address": "5 Willow Green, Knutsford, Cheshire","postcode": "WA16 6AX"},{"name": "Tim Hurrell","address": "5 Cherry Blosson Grove, Leamington, Warwickshire","postcode": "CV31 2RT"},{"name": "Queen","address": "Palace","postcode": "SW1"}]}'
 #JSONData = json.dumps(data)
 
@@ -53,6 +41,7 @@ class addressbook(object):
     for a in self.Addressbook:
       if a['name'] == name:
         return (a['postcode'])
+        print (a['postcode'])
 
   
   def add(self, name,address,postcode):
@@ -79,10 +68,10 @@ class addressbook(object):
 full_cmd_arguments = sys.argv
 
 argument_list = full_cmd_arguments[1:]
-print (argument_list)
+#print (argument_list)
 
-short_options = "hf:d:a:"
-long_options = ["help", "input=", "delete=", "add="]
+short_options = "hf:d:a:u:"
+long_options = ["help", "findname=", "delete=", "add=","update="]
 
 try:
     arguments, values = getopt.getopt(argument_list, short_options, long_options)
@@ -95,29 +84,22 @@ except getopt.error as err:
 p_object = addressbook(JSONData)
 print(arguments)
 for current_argument, current_value in arguments:
-    if current_argument in ("-f", "--input"):
-        #p_object.find(f'{current_value}')
+    if current_argument in ("-f", "--findname"):
         p_object.find(current_value)
-        #print (current_value)
-        #print (("Enabling special input mode (%s)") % (current_value))
-    if current_argument in ("-d", "--delete"):
+        for a in p_object.Addressbook:
+            if a['name'] == current_value:
+                print ('postcode is' , a['postcode'])
+    elif current_argument in ("-d", "--delete"):
         p_object.remove(current_value)
-    if current_argument in ("-a", "--add"):  
+    elif current_argument in ("-a", "--add"):  
         x = current_value.split(", ")
         p_object.add(x[0],x[1],x[2])
-        #print (current_value)
+    elif current_argument in ("-u", "--update"):
+        x = current_value.split(", ")
+        p_object.amend(x[0],x[1],x[2])
     elif current_argument in ("-h", "--help"):
         print ("Displaying help")
-    #elif current_argument in ("-o", "--output"):
-    # 
-    #    print (("Enabling special output mode (%s)") % (current_value))
-    
 
-# Assign object of the class
-
-
-#p_object.add('Prince','Highgrove','GL7')
-#p_object.remove('Prince')
 #p_object.amend('Queen','Hotel','NW10')
 
 print (p_object.Addressbook)
@@ -137,15 +119,6 @@ def write_json(data,filename = 'databasenew.json'):
   #print (temp['Addressbook'].)
 
 # write_json(data)
-
-
-
-
-#print(p_object.Addressbook[0])
-##for a in p_object.Addressbook:
-#  if a['name'] == "Matthew Hurrell":
-# print (a['postcode'])
-#print (type(p_object.Addressbook))
 
 
 
